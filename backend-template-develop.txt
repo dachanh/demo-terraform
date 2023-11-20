@@ -1,0 +1,10 @@
+terraform {
+  backend "s3" {
+    bucket         = "<BUCKET_NAME>"
+    key            = "<KEY_NAME>"
+    region         = "<REGION>"
+    dynamodb_table = "<TABLE_NAME>"
+    role_arn       = "arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_ARN>"
+    encrypt        = true
+  }
+}
