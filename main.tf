@@ -12,10 +12,10 @@ module "vpc" {
   environment = var.environment
 }
 
-module "api_gateway" {
-  source = "./module/api_gateway"
-  vpc_id                    = module.vpc.vpc_id
-}
+# module "api_gateway" {
+#   source = "./module/api_gateway"
+#   vpc_id                    = module.vpc.vpc_id
+# }
 
 
 module "network" {
