@@ -33,7 +33,7 @@ module "ecr" {
   source                = "./module/ECR"
   name                  = var.rds_database
   environment           = var.environment
-  expiration_after_days = 2
+  expiration_after_days = var.ecr_expire_duration
 }
 
 module "rds_instance" {
