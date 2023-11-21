@@ -5,12 +5,12 @@ provider "aws" {
 }
 
 
-module "vpc" {
-  source      = "./module/vpc"
-  cidr        = var.vpc_cidr
-  vpc_name    = var.vpc_name
-  environment = var.environment
-}
+# module "vpc" {
+#   source      = "./module/vpc"
+#   cidr        = var.vpc_cidr
+#   vpc_name    = var.vpc_name
+#   environment = var.environment
+# }
 
 # module "api_gateway" {
 #   source = "./module/api_gateway"
@@ -18,55 +18,60 @@ module "vpc" {
 # }
 
 
-module "network" {
-  source                    = "./module/network"
-  name_network              = var.name
-  environment               = var.environment
-  vpc_id                    = module.vpc.vpc_id
-  public_subnet_cidr_block  = var.public_subnet_cidr_block
-  private_subnet_cidr_block = var.private_subnet_cidr_block
-  availability_zones        = var.availability_zones
-  vpc_igw                   = module.vpc.igw
-}
-
-module "ecr" {
-  source                = "./module/ECR"
-  name                  = var.rds_database
-  environment           = var.environment
-  expiration_after_days = var.ecr_expire_duration
-}
-
-module "rds_instance" {
-  source               = "./module/rds"
-  name                 = var.rds_database
-  environment          = var.environment
-  vpc_id               = module.vpc.vpc_id
-  db_subnet_group_name = module.network.db_subnet_group_name
-  rds_username         = var.rds_username
-  rds_password         = var.rds_password
-  rds_db_version       = var.rds_db_version
-  instance_class       = var.rds_instance_class
-  sg_private_ids       = module.network.sg_private_rds_ids
-}
-
-module "ecs" {
-  source             = "./module/ECS"
-  sg_private_ecs_ids = module.network.sg_private_ecs_ids
-  public_subnet_ids  = module.network.public_subnet_ids
-  name               = var.name
-  aws_region         = var.aws_region
-  environment        = var.environment
-  image_id           = var.image_id
-  ecs_instance_type  = var.ecs_instance_type
-  private_subnet_ids = module.network.private_subnet_ids
-}
-
-# module "s3" {
-#     source = "./module/s3"
-#     name= var.name
-#     environment = var.environment
+# module "network" {
+#   source                    = "./module/network"
+#   name_network              = var.name
+#   environment               = var.environment
+#   vpc_id                    = module.vpc.vpc_id
+#   public_subnet_cidr_block  = var.public_subnet_cidr_block
+#   private_subnet_cidr_block = var.private_subnet_cidr_block
+#   availability_zones        = var.availability_zones
+#   vpc_igw                   = module.vpc.igw
 # }
 
+# module "ecr" {
+#   source                = "./module/ECR"
+#   name                  = var.rds_database
+#   environment           = var.environment
+#   expiration_after_days = var.ecr_expire_duration
+# }
+
+# module "rds_instance" {
+#   source               = "./module/rds"
+#   name                 = var.rds_database
+#   environment          = var.environment
+#   vpc_id               = module.vpc.vpc_id
+#   db_subnet_group_name = module.network.db_subnet_group_name
+#   rds_username         = var.rds_username
+#   rds_password         = var.rds_password
+#   rds_db_version       = var.rds_db_version
+#   instance_class       = var.rds_instance_class
+#   sg_private_ids       = module.network.sg_private_rds_ids
+# }
+
+# module "ecs" {
+#   source             = "./module/ECS"
+#   sg_private_ecs_ids = module.network.sg_private_ecs_ids
+#   public_subnet_ids  = module.network.public_subnet_ids
+#   name               = var.name
+#   aws_region         = var.aws_region
+#   environment        = var.environment
+#   image_id           = var.image_id
+#   ecs_instance_type  = var.ecs_instance_type
+#   private_subnet_ids = module.network.private_subnet_ids
+# }
+
+module "s3" {
+    source = "./module/s3"
+    name= var.name
+    environment = var.environment
+}
+
+module "lambda" {
+  source = "./module/lambda"
+  bucket_name = module.s3.s3_bucket_arn
+  environment = var.environment
+}
 
 # module "cloudfront" {
 #     source = "./module/cloudfront"

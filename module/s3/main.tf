@@ -4,7 +4,6 @@ resource "aws_s3_bucket" "s3_bucket" {
 
 # resource "aws_s3_bucket" "s3_bucket_1" {
 #   bucket = "${var.name}-${var.environment}-test"
-#     acl = "public-read"
 
 # }
 
