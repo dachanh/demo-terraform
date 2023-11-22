@@ -28,7 +28,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "s3:*",
         ],
         Effect = "Allow",
-        Resource = "${var.bucket_name}/*",
+        Resource = "${var.bucket_arn}/*",
       },
     ],
   })

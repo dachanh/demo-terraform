@@ -71,6 +71,6 @@ variable "ecs_instance_type" {
   type = string
 }
 variable "ecr_expire_duration" {
-  type = number
+  type    = number
   default = 2
 }

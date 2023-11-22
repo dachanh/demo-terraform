@@ -12,11 +12,6 @@ provider "aws" {
 #   environment = var.environment
 # }
 
-# module "api_gateway" {
-#   source = "./module/api_gateway"
-#   vpc_id                    = module.vpc.vpc_id
-# }
-
 
 # module "network" {
 #   source                    = "./module/network"
@@ -62,14 +57,16 @@ provider "aws" {
 # }
 
 module "s3" {
-    source = "./module/s3"
-    name= var.name
-    environment = var.environment
+  source      = "./module/s3"
+  name        = var.name
+  environment = var.environment
 }
 
 module "lambda" {
-  source = "./module/lambda"
-  bucket_name = module.s3.s3_bucket_arn
+  source      = "./module/lambda"
+  bucket_domain_name = module.s3.s3_bucket_domain
+  bucket_arn  = module.s3.s3_bucket_arn
+  bucket_name = module.s3.s3_bucket_name
   environment = var.environment
 }
 
@@ -77,3 +74,13 @@ module "lambda" {
 #     source = "./module/cloudfront"
 #     s3_bucket_domain = module.s3.s3_bucket_domain
 # }
+
+module "api_gateway" {
+  source      = "./module/api_gateway"
+  environment = var.environment
+  # vpc_id                    = module.vpc.vpc_id
+  lambda_func            = module.lambda.lambda_func
+  lambda_func_arn        = module.lambda.lambda_func_arn
+  lambda_func_invoke_arn = module.lambda.lambda_func_invoke_arn
+}
+

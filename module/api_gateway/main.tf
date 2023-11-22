@@ -1,11 +1,11 @@
 
-resource "aws_internet_gateway" "vpc" {
-  vpc_id = var.vpc_id
-  tags = {
-    Name        = "${var.vpc_name}-${var.environment}"
-    environment = var.environment
-  }
-}
+# resource "aws_internet_gateway" "vpc" {
+#   vpc_id = var.vpc_id
+#   tags = {
+#     Name        = "${var.vpc_name}-${var.environment}"
+#     environment = var.environment
+#   }
+# }
 
 resource "aws_api_gateway_rest_api" "igw_lambda" {
   name = "rest_api_${var.environment}" 
@@ -23,15 +23,15 @@ resource "aws_api_gateway_integration" "lambda" {
   rest_api_id = "${aws_api_gateway_rest_api.igw_lambda.id}"
   resource_id = "${aws_api_gateway_method.proxy_root.resource_id}"
   http_method = "${aws_api_gateway_method.proxy_root.http_method}" 
-  uri = "${var.lambda_func_arn}"
+  
+  uri = "${var.lambda_func_invoke_arn}"
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
 }
 
-resource "aws_api_gateway_deployment" "example" {
+resource "aws_api_gateway_deployment" "demo_api_gw_develop" {
   depends_on = [
     "aws_api_gateway_integration.lambda",
-    "aws_api_gateway_integration.lambda_root",
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.igw_lambda.id}"
