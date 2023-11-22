@@ -11,3 +11,11 @@ variable "vpc_name" {
 variable "environment" {
     type =  string
 }
+
+variable "lambda_func" {
+    type =  string
+}
+
+variable "lambda_func_arn" {
+    type = string
+}
