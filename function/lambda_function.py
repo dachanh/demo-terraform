@@ -1,12 +1,12 @@
 import boto3
 import base64
-
+import os
 def lambda_handler(event, context):
     # Initialize S3 client
     s3_client = boto3.client('s3')
 
     # The name of your S3 bucket
-    bucket_name = 'your-bucket-name'
+    bucket_name = os.environ["S3_BUCKET"]
 
     # Assuming the image is passed as a base64 encoded string in the event
     image_data = base64.b64decode(event['image'])

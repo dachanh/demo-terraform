@@ -7,8 +7,8 @@ resource "aws_lambda_function" "demo_lambda" {
     memory_size = "1536"
     environment {
       variables = {
-        S3_BUCKET_DOMAIN= var.bucket_name
-
+        S3_BUCKET_DOMAIN= var.bucket_domain_name
+        S3_BUCKET = var.bucket_name
       }
     }
 }
