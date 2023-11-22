@@ -28,8 +28,25 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "s3:*",
         ],
         Effect = "Allow",
-        Resource = "${var.bucket_arn}/*",
+        Resource = "arn:aws:s3:::${var.bucket_name}/*",
       },
     ],
+  })
+}
+
+resource "aws_iam_role_policy" "func_logging" {
+  name   = "function-logging-policy"
+  role =   aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        Action : [
+          "logs:*",
+        ],
+        Effect : "Allow",
+        Resource : "arn:aws:logs:*:*:*"
+      }
+    ]
   })
 }

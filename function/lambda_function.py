@@ -1,23 +1,24 @@
 import boto3
 import base64
+import json
+import random 
 import os
 def lambda_handler(event, context):
-    # Initialize S3 client
     s3_client = boto3.client('s3')
-
-    # The name of your S3 bucket
+    body = body = json.loads(event['body'])
+    print(body)
     bucket_name = os.environ["S3_BUCKET"]
 
-    # Assuming the image is passed as a base64 encoded string in the event
-    image_data = base64.b64decode(event['image'])
+    image_data = base64.b64decode(body['image'])
 
-    # The key under which to store the image in S3
-    object_name = 'your-object-name'
+    object_name = str(random.randint(0,10000))+'.jpg'
 
-    # Upload the image
     s3_client.put_object(Body=image_data, Bucket=bucket_name, Key=object_name)
 
     return {
         'statusCode': 200,
-        'body': 'Image uploaded successfully'
+        'body': json.dumps({
+            "name": object_name,
+            "message": "Upload image successfully!"
+        })
     }
