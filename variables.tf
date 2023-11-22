@@ -70,3 +70,7 @@ variable "image_id" {
 variable "ecs_instance_type" {
   type = string
 }
+variable "ecr_expire_duration" {
+  type    = number
+  default = 2
+}

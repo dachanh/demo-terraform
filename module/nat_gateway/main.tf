@@ -1,6 +1,6 @@
 # allocate Elastic IP address ,
 resource "aws_eip" "nat" {
-  vpc   = true             # if false 
+  # vpc   = true             # if false 
   count = var.subnet_count # the number of eleastic IP that is created 
 }
 

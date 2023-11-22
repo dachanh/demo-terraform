@@ -1,10 +1,16 @@
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = "${var.name}-${var.environment}"
+  versioning {
+    enabled = true
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # resource "aws_s3_bucket" "s3_bucket_1" {
 #   bucket = "${var.name}-${var.environment}-test"
-#     acl = "public-read"
 
 # }
 

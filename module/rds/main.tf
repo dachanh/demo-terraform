@@ -4,7 +4,6 @@ resource "aws_db_instance" "amacho_database" {
   engine               = "postgres"
   engine_version       = var.rds_db_version
   instance_class       = var.instance_class
-  name                 = var.name
   username             = var.rds_username
   password             = var.rds_password
   parameter_group_name = "default.postgres13"
